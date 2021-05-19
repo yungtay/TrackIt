@@ -7,7 +7,7 @@ import logo from '../../image/logo.png';
 import { LoginRegistrationContainer } from '../LoginScreen/LoginScreen'
 
 export default function Register() {
-    const [loginInformation, setLoginInformation] = useState({email:"", password:"", name:"", image:""})
+    const [registerInformation, setRegisterInformation] = useState({email:"", password:"", name:"", image:""})
     const [isLoading, setIsLoading] = useState(false)
     const history = useHistory()
 
@@ -20,15 +20,15 @@ export default function Register() {
           type="text"
           placeholder="email"
           onChange={(e) =>
-            setLoginInformation({ ...loginInformation, email: e.target.value })
+            setRegisterInformation({ ...registerInformation, email: e.target.value })
           }
         ></input>
         <input
           type="password"
           placeholder="senha"
           onChange={(e) =>
-            setLoginInformation({
-              ...loginInformation,
+            setRegisterInformation({
+              ...registerInformation,
               password: e.target.value,
             })
           }
@@ -37,14 +37,14 @@ export default function Register() {
           type="text"
           placeholder="nome"
           onChange={(e) =>
-            setLoginInformation({ ...loginInformation, name: e.target.value })
+            setRegisterInformation({ ...registerInformation, name: e.target.value })
           }
         ></input>
         <input
           type="text"
           placeholder="foto"
           onChange={(e) =>
-            setLoginInformation({ ...loginInformation, image: e.target.value })
+            setRegisterInformation({ ...registerInformation, image: e.target.value })
           }
         ></input>
         <button onClick={registerAccount}>
@@ -60,8 +60,8 @@ export default function Register() {
     );
 
     function filledAll(){
-        for (const key in loginInformation) {
-          if (loginInformation[key].length === 0) {
+        for (const key in registerInformation) {
+          if (registerInformation[key].length === 0) {
             return false;
           }
         }
@@ -73,8 +73,8 @@ export default function Register() {
         alert("Preencha todos os campos !");
       } else {
         setIsLoading(true)
-        console.log(loginInformation)
-        const request = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up", loginInformation)
+        console.log(registerInformation)
+        const request = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up", registerInformation)
         request.then((response) => {
           alert(`O email: ${response.data.email} foi cadastrado com sucesso`);
           setIsLoading(false);

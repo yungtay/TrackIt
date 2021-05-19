@@ -1,16 +1,15 @@
-import styled from 'styled-components';
+import styled, {createGlobalStyle, withTheme} from 'styled-components';
 import logo from '../../image/logo.png';
 import { Link, useHistory } from 'react-router-dom';
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import axios from "axios"
 import Loader from "react-loader-spinner";
+import UserContext from "../../context/UserContext"
 export default function LoginScreen() {
     const [loginInformation, setLoginInformation] = useState({email: "", password: ""})
-    const [accountInformation, setAccountInformation] = useState(null)
     const [isLoading, setIsLoading] = useState(false)
     const history = useHistory()
-    console.log(accountInformation)
-    console.log(isLoading)
+    const {setAccountInformation} = useContext(UserContext)
 
     if(isLoading === null) return "Carregando"
 
