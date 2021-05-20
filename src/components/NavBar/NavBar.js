@@ -4,7 +4,6 @@ import UserContext from "../../context/UserContext"
 
 export default function NavBar() {
     const {accountInformation} = useContext(UserContext)
-    console.log(accountInformation)
 
     if(!accountInformation) return "Carregando"
 

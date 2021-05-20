@@ -8,8 +8,8 @@ export default function Footer(){
     const percentage = 65;
     return (
       <ContainerFooter>
-        <Link>Hábitos</Link>
-        <Link>
+        <Link to="/habitos">Hábitos</Link>
+        <Link to="/hoje">
           <ContainerCircularProgressbar>
             <CircularProgressbar
               value={percentage}
@@ -25,7 +25,7 @@ export default function Footer(){
             />
           </ContainerCircularProgressbar>
         </Link>
-        <Link>Histórico</Link>
+        <Link to="/historico">Histórico</Link>
       </ContainerFooter>
     );
 }
