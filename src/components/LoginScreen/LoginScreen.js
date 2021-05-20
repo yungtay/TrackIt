@@ -6,26 +6,35 @@ import axios from "axios"
 import Loader from "react-loader-spinner";
 import UserContext from "../../context/UserContext"
 export default function LoginScreen() {
-    const [loginInformation, setLoginInformation] = useState({email: "", password: ""})
-    const [isLoading, setIsLoading] = useState(false)
-    const history = useHistory()
-    const {setAccountInformation} = useContext(UserContext)
+  const [loginInformation, setLoginInformation] = useState({
+    email: "",
+    password: "",
+  });
+  const [isLoading, setIsLoading] = useState(false);
+  const history = useHistory();
+  const { setAccountInformation } = useContext(UserContext);
 
-    if(isLoading === null) return "Carregando"
+  if (isLoading === null) return "Carregando";
 
-    return (
-      <LoginRegistrationContainer loading={isLoading}>
-        <img src={logo} alt="logo"/>
+  return (
+    <LoginRegistrationContainer loading={isLoading}>
+      <form onSubmit={logIn}>
+        <img src={logo} alt="logo" />
         <input
-          type="text"
+          type="email"
           placeholder="email"
+          required
           onChange={(e) =>
-            setLoginInformation({ ...loginInformation, email: e.target.value })
+            setLoginInformation({
+              ...loginInformation,
+              email: e.target.value,
+            })
           }
         ></input>
         <input
           type="password"
           placeholder="senha"
+          required
           onChange={(e) =>
             setLoginInformation({
               ...loginInformation,
@@ -33,50 +42,38 @@ export default function LoginScreen() {
             })
           }
         ></input>
-        <button onClick={logIn}>
+        <button type="submit">
           {" "}
           {isLoading ? (
-            <Loader type="ThreeDots" color="white" height={20}/>
+            <Loader type="ThreeDots" color="white" height={20} />
           ) : (
             "Entrar"
           )}
         </button>
         <Link to="/register">Não tem uma conta? Cadastra-se!</Link>
-      </LoginRegistrationContainer>
+      </form>
+    </LoginRegistrationContainer>
+  );
+
+  function logIn(e) {
+    e.preventDefault();
+    setIsLoading(true);
+    const request = axios.post(
+      "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login",
+      loginInformation
     );
-
-    function filledAll(){
-        for (const key in loginInformation) {
-          if (loginInformation[key].length === 0) {
-            return false;
-          }
-        }
-        return true;
-      }
-
-    function logIn() {
-      if (!filledAll()) {
-        alert("Preencha todos os campos !")
-      } else {
-        setIsLoading(true)
-        const request = axios.post(
-          "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login",
-          loginInformation
-        );
-        request.then((response) => {
-          setAccountInformation(response.data);
-          setIsLoading(false)
-          history.push("/hoje");
-        });
-        request.catch((response) => {
-          alert(
-            `O email ou senha são inválidos, erro: ${response.response.status}`
-          );
-          setIsLoading(false);
-        });
-      }
-
-    }
+    request.then((response) => {
+      setAccountInformation(response.data);
+      setIsLoading(false);
+      history.push("/hoje");
+    });
+    request.catch((response) => {
+      alert(
+        `O email ou senha são inválidos, erro: ${response.response.status}`
+      );
+      setIsLoading(false);
+    });
+  }
 }
 
 const LoginRegistrationContainer = styled.div`
@@ -113,7 +110,11 @@ const LoginRegistrationContainer = styled.div`
     width: 180px;
     height: 180px;
 
-    margin: 64px 0 33px 0;
+    margin: 64px auto 33px auto;
+  }
+  form {
+    display: flex;
+    flex-direction: column;
   }
 `;
 

@@ -27,7 +27,7 @@ export default function App() {
             <Route path="/hoje" exact>
               <NavBar />
               <Footer />
-              <Global/>
+              <Global />
               <Switch>
                 <Route path="/hoje" exact>
                   <Habitos />
