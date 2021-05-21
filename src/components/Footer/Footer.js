@@ -1,6 +1,6 @@
 import styled from "styled-components"
 import { Link } from "react-router-dom"
-import { useContext, useEffect } from "react"
+import { useContext } from "react"
 import UserContext from "../../context/UserContext"
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
@@ -45,6 +45,9 @@ const ContainerFooter = styled.div`
   display: flex;
   justify-content: space-evenly;
   align-items: center;
+
+  color: #52B6FF;
+
 `;
 
 const ContainerCircularProgressbar = styled.div`

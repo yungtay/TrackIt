@@ -4,7 +4,7 @@ import axios from "axios"
 import Loader from "react-loader-spinner";
 import logo from '../../image/logo.png';
 
-import { LoginRegistrationContainer } from '../LoginScreen/LoginScreen'
+import { LoginRegistrationContainer, LinkContainer } from '../LoginScreen/LoginScreen'
 
 export default function Register() {
   const [registerInformation, setRegisterInformation] = useState({
@@ -74,7 +74,9 @@ export default function Register() {
             "Cadastrar"
           )}
         </button>
-        <Link to="/">Já tem uma conta? Faça login!</Link>
+        <LinkContainer>
+          <Link to="/">Já tem uma conta? Faça login!</Link>
+        </LinkContainer>
       </form>
     </LoginRegistrationContainer>
   );

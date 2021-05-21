@@ -13,8 +13,6 @@ export default function Hoje() {
     headers: { Authorization: `Bearer ${accountInformation.token}` },
   };
 
-  console.log(habitsDay)
-
   useEffect(() => {
     const request = axios.get(
       "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today",
@@ -22,20 +20,17 @@ export default function Hoje() {
     );
     request.then((response) => {
       setHabitsDay(response.data)
-      setHasUpdate(false);;
+      setHasUpdate(false);
     });
   }, [hasUpdate]);
 
   const currentDate = dayjs().locale("pt-br").format("dddd, DD/MM");
   const percentage = (habitsDay.reduce((acc, item) => item.done ? acc += 1/habitsDay.length : acc, 0)*100);
-  console.log(habitsDay);
-
-  if (!habitsDay.length) return "Não há nenhum hábito para o dia atual";
 
   return (
     <ContainerToday>
       <Title>{currentDate}</Title>
-      <Subtitle color={percentage}>{percentage !== 0 ? `${percentage.toFixed(0)}% dos hábitos concluídos`:"Nenhuma hábito concluído ainda"}</Subtitle>
+      <Subtitle color={percentage}>{habitsDay.length ? (percentage !== 0 ? `${percentage.toFixed(0)}% dos hábitos concluídos`:"Nenhuma hábito concluído ainda") : "Não há habitos para o dia atual"}</Subtitle>
       <HabitsToday>
         {habitsDay.map((h) => (
           <HabitToday key={h.id}>
@@ -58,29 +53,27 @@ export default function Hoje() {
   );
 
   function checkHabitDone(id, done) {
-    if(!done){
-        const request = axios.post(
-            `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/check`,
-            {}, config
-          );
-          request.then((response) => {
-            setHasUpdate(true);
-          });
-          request.then((response) => {
-            console.log(response.data);
-          });
+    if (!done) {
+      habitDoneUndone(
+        `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/check`,
+        "Houve um erro ao colocar como feito"
+      );
     } else {
-        const request = axios.post(
-            `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/uncheck`, {},
-            config
-          );
-          request.then((response) => {
-            setHasUpdate(true);
-          });
-          request.then((response) => {
-            console.log(response.data);
-          });
+      habitDoneUndone(
+        `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/uncheck`,
+        "Houve um erro ao colocar como não feito"
+      );
     }
+  }
+
+  function habitDoneUndone(url, msg) {
+    const request = axios.post(url, {}, config);
+    request.then((response) => {
+      setHasUpdate(true);
+    });
+    request.catch((response) => {
+      alert(msg);
+    });
   }
 }
 

@@ -1,12 +1,56 @@
 import styled from "styled-components"
+import Calendar from 'react-calendar'
+import dayjs from "dayjs"
+import { useEffect, useContext, useState } from "react"
+import axios from "axios"
+import UserContext from "../../context/UserContext";
+import './Calendar.css'
 export default function Historic() {
-    return(
-        <ContainerHistoric>
-           <Title>Histórico</Title>
-           Em breve você poderá ver o histórico dos seus hábitos aqui!
-        </ContainerHistoric>
-        
-    )
+
+    const {accountInformation} = useContext(UserContext);
+    const [habitsCalendar, setHabitsCalendar] = useState([])
+
+    useEffect(() => {
+
+      const config = {
+        headers: { Authorization: `Bearer ${accountInformation.token}` },
+      };
+
+      const requestHabits = axios.get(
+        "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/history/daily",
+        config
+      );
+      requestHabits.then((response) => {
+        setHabitsCalendar(response.data);
+      });
+
+    }, []);
+
+    const segura = habitsCalendar.map((h) => h.day)
+    //console.log(habitsCalendar.findIndex((d) => d.day === '21/05/2021'))
+    //console.log(habitsCalendar[habitsCalendar.findIndex((d) => d.day === '21/05/2021')].habits)
+    //console.log(habitsCalendar)
+
+    //console.log([1,2,3].findIndex((t) => t === 3))
+
+    //
+
+
+  return (
+    <ContainerHistoric>
+      <Title>Histórico</Title>
+      <Calendar locale="pt-br" calendarType="US" tileClassName={({ date }) => segura.includes(dayjs(date).format('DD/MM/YYYY')) ? (habitsCalendar[habitsCalendar.findIndex((d) => d.day === dayjs(date).format('DD/MM/YYYY'))].habits.reduce((acc, d) => !d.done ? acc = false : acc ) ? 'react-calendar-tile-green' : 'react-calendar-tile-red') : null } onClickDay={(date) => segura.includes(dayjs(date).format('DD/MM/YYYY'))}/>
+       <HabitCalendarBottom>
+
+        </HabitCalendarBottom> 
+    </ContainerHistoric>
+  );
+
+  function ShowHabits(date){
+      return(
+        <div>{habitsCalendar[habitsCalendar.findIndex((d) => d.day === dayjs(date).format('DD/MM/YYYY'))].habits.map((h) => h.name)}</div>
+      )
+  }
 }
 
 const ContainerHistoric = styled.div`
@@ -23,3 +67,15 @@ const Title = styled.div`
 
   margin-bottom: 17px;
 `;
+
+const HabitCalendarBottom = styled.div`
+margin-top: 20px;`
+
+
+
+
+
+
+
+
+
