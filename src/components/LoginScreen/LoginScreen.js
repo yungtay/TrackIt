@@ -1,7 +1,7 @@
-import styled, {createGlobalStyle, withTheme} from 'styled-components';
+import styled from 'styled-components';
 import logo from '../../image/logo.png';
 import { Link, useHistory } from 'react-router-dom';
-import { useState, useContext } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import axios from "axios"
 import Loader from "react-loader-spinner";
 import UserContext from "../../context/UserContext"
@@ -13,6 +13,16 @@ export default function LoginScreen() {
   const [isLoading, setIsLoading] = useState(false);
   const history = useHistory();
   const { setAccountInformation } = useContext(UserContext);
+
+  
+  useEffect(() => {
+    if(localStorage.getItem("user")){
+      const userSerializado = localStorage.getItem("user")
+      const user = JSON.parse(userSerializado)
+      setAccountInformation(user)
+      history.push("/habitos")
+    }
+  }, [])
 
   if (isLoading === null) return "Carregando";
 
@@ -50,7 +60,9 @@ export default function LoginScreen() {
             "Entrar"
           )}
         </button>
-        <Link to="/register">Não tem uma conta? Cadastra-se!</Link>
+        <LinkContainer>
+          <Link to="/register">Não tem uma conta? Cadastra-se!</Link>
+        </LinkContainer>
       </form>
     </LoginRegistrationContainer>
   );
@@ -62,17 +74,21 @@ export default function LoginScreen() {
       "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login",
       loginInformation
     );
-    request.then((response) => {
-      setAccountInformation(response.data);
-      setIsLoading(false);
-      history.push("/habitos");
-    });
-    request.catch((response) => {
-      alert(
-        `O email ou senha são inválidos, erro: ${response.response.status}`
-      );
-      setIsLoading(false);
-    });
+    request.then(logInSucess)
+    request.catch(logInFail)
+  }
+
+  function logInSucess(response) {
+    setAccountInformation(response.data);
+    setIsLoading(false);
+    history.push("/habitos");
+  }
+
+  function logInFail(response) {
+    alert(
+      `O email ou senha são inválidos, erro: ${response.response.status}`
+    );
+    setIsLoading(false);
   }
 }
 
@@ -115,7 +131,15 @@ const LoginRegistrationContainer = styled.div`
   form {
     display: flex;
     flex-direction: column;
+    align-items: center;
   }
 `;
 
-export {LoginRegistrationContainer} ;
+const LinkContainer = styled.div`
+  color: #52B6FF;
+  font-size: 14px;
+`
+
+
+
+export {LoginRegistrationContainer, LinkContainer} ;

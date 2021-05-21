@@ -5,6 +5,9 @@ import axios from "axios"
 export default function CreateHabits({props}) {
   const {habitsDays, setHabitsDays, creatingHabit,setCreatingHabit, hasUpdate, setHasUpdate, accountInformation } = props
   const [isLoading, setIsLoading] = useState(false)
+  const config = {
+    headers: { Authorization: `Bearer ${accountInformation.token}` },
+  };
 
     if(!creatingHabit) return ""
     return (
@@ -63,26 +66,28 @@ export default function CreateHabits({props}) {
       }
 
       setIsLoading(true);
-      const config = {
-        headers: { Authorization: `Bearer ${accountInformation.token}` },
-      };
-      
+
       const request = axios.post(
         "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits",
         habitsDays,
         config
       );
-      request.then((response) => {
-        alert("O hábito foi adicionado com sucesso !");
-        setIsLoading(false);
-        setHabitsDays({ name: "", days: [] });
-        setCreatingHabit(false)
-        setHasUpdate(true)
-      });
-      request.catch((response) => {
-        alert("O hábito não foi adicionado tente novamente !")
-        setIsLoading(false);
-      });
+
+      request.then(submitHabitSucess);
+      request.catch(submitHabitFail);
+    }
+
+    function submitHabitSucess(response) {
+      alert("O hábito foi adicionado com sucesso !");
+      setIsLoading(false);
+      setHabitsDays({ name: "", days: [] });
+      setCreatingHabit(false)
+      setHasUpdate(true)
+    }
+
+    function submitHabitFail(response) {
+      alert("O hábito não foi adicionado tente novamente !")
+      setIsLoading(false);
     }
 
 }
