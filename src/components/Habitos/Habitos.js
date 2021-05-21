@@ -2,45 +2,102 @@ import styled from "styled-components"
 import { useEffect, useContext, useState } from "react"
 import axios from "axios"
 import UserContext from "../../context/UserContext"
-import CreateHabits from "./CreateHabits"
+import CreateHabits, {WeekDay, Day, CreateHabit, Habit} from "./CreateHabits"
+import { BsTrash } from 'react-icons/bs'
 export default function Habitos() {
 
-    const {accountInformation} = useContext(UserContext)
+    const {accountInformation, hasUpdate, setHasUpdate, setHabitsDay} = useContext(UserContext)
     const [myHabits, setMyHabits] = useState([])
-    const [habitsDays, setHabitsDays] = useState({habit: "", days: []})
-    const [creatingHabit, setCreatingHabit] = useState(0)
+    const [habitsDays, setHabitsDays] = useState({name: "", days: []})
+    const [creatingHabit, setCreatingHabit] = useState(false)
     const msgNoHabit = "Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!"
+    const config = { headers : {"Authorization" : `Bearer ${accountInformation.token}`}}
 
     useEffect(() => {
-        const config = { headers : {"Authorization" : `Bearer ${accountInformation.token}`}}
-        const request = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits", config)
-        request.then((response) => {setMyHabits(response.data)})
-    }, [])
+        const requestHabits = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits", config)
+        requestHabits.then((response) => {setMyHabits(response.data)})
+        setHasUpdate(false)
 
-    console.log(myHabits)
-    console.log(habitsDays)
+        const requestTodayHabits = axios.get(
+            "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today",
+            config
+          );
+          requestTodayHabits.then((response) => {
+            setHabitsDay(response.data)
+          });
+
+    }, [hasUpdate])
+    
+    if(!myHabits) return "Carregando"
 
 
-    return(
-        <ContainerHabitos>
-            <ContainerAdicionarHabitos>
-                <span>Meus hábitos</span>
-                <AdicionarHabitos onClick={() => setCreatingHabit((creatingHabit+1)%2)}>+</AdicionarHabitos>
-            </ContainerAdicionarHabitos>
-            <CreateHabits props={{habitsDays, setHabitsDays, creatingHabit}} />
+    return (
+      <ContainerHabitos>
+        <ContainerAdicionarHabitos>
+          <span>Meus hábitos</span>
+          <AdicionarHabitos onClick={() => setCreatingHabit(true)}>
+            +
+          </AdicionarHabitos>
+        </ContainerAdicionarHabitos>
+        <CreateHabits
+          props={{
+            habitsDays,
+            setHabitsDays,
+            creatingHabit,
+            setCreatingHabit,
+            hasUpdate,
+            setHasUpdate,
+            accountInformation,
+          }}
+        />
 
-            <HabitosCadastrados>
-                {myHabits.length ? myHabits.map((h) => h) : msgNoHabit}
-            </HabitosCadastrados>
-            
-        </ContainerHabitos>
-        
-    )
+        <HabitosCadastrados>
+          {myHabits.length
+            ? myHabits.map((h, i) => (
+                <CreateHabit key={i}>
+                  <Habit key={h.id + i}>
+                    {h.name}
+                    <BsTrash onClick={() => deleteHabit(h.id)} />
+                  </Habit>
+                  <WeekDay key={i}>
+                    {["D", "S", "T", "Q", "Q", "S", "S"].map((d, i) => (
+                      <Day
+                        key={i}
+                        isSelected={
+                          h.days.includes(i) ? "selected" : "notSelected"
+                        }
+                      >
+                        {d}
+                      </Day>
+                    ))}
+                  </WeekDay>
+                </CreateHabit>
+              ))
+            : msgNoHabit}
+        </HabitosCadastrados>
+      </ContainerHabitos>
+    );
+
+    function deleteHabit(id) {
+      if (!window.confirm('Você tem certeza que quer deletar o hábito ?')) return;
+      const config = {
+        headers: { Authorization: `Bearer ${accountInformation.token}` },
+      };
+      const request = axios.delete(
+        `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}`,
+        config
+      );
+      request.then((response) => {
+        alert("Você deletou esse hábito");
+        setHasUpdate(true);
+      });
+      request.catch((response) => alert("Ocorreu um erro, tente novamente"));
+    }
 }
 
 const ContainerHabitos = styled.div`
   padding: 0 4.86%;
-  margin-top: 98px;
+  margin: 98px 0 121px 0;
 `;
 
 const ContainerAdicionarHabitos = styled.div`
@@ -74,6 +131,9 @@ const HabitosCadastrados = styled.div`
   font-size: 18px;
   color: #666666;
 `;
+
+
+
 
 
 
