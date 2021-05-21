@@ -13,7 +13,7 @@ export default function Register() {
     name: "",
     image: "",
   });
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(0);
   const history = useHistory();
 
   if (isLoading === null) return "Carregando";
@@ -81,7 +81,7 @@ export default function Register() {
 
   function registerAccount(e) {
     e.preventDefault();
-    setIsLoading(true);
+    setIsLoading(1);
     console.log(registerInformation);
     const request = axios.post(
       "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up",
@@ -89,12 +89,12 @@ export default function Register() {
     );
     request.then((response) => {
       alert(`O email: ${response.data.email} foi cadastrado com sucesso`);
-      setIsLoading(false);
+      setIsLoading(0);
       history.push("/");
     });
     request.catch((response) => {
       alert(`Houve um erro: ${response.response.status}, tente novamente`);
-      setIsLoading(false);
+      setIsLoading(0);
     });
   }
 }

@@ -65,7 +65,7 @@ export default function LoginScreen() {
     request.then((response) => {
       setAccountInformation(response.data);
       setIsLoading(false);
-      history.push("/hoje");
+      history.push("/habitos");
     });
     request.catch((response) => {
       alert(
