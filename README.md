@@ -2,7 +2,10 @@
 
 Uma aplicação para controle de hábitos, crie a sua conta e logue para começar a acompanhar o seudesenvolvimento. Adicione um hábito selecionando o dia da semana que você irá desenvolvê-lo e acompanhe o seu progresso diário ou seu histórico de progresso no calendário do aplicativo.
 
-<img style="text-align: center" src="/assets/track-it.gif" />
+<p align="center">
+  <img src="/assets/track-it.gif" />
+</p>
+
 
 ## Sobre
 
