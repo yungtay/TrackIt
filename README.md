@@ -35,12 +35,14 @@ Dessa forma, o aplicativo proporciona a melhor percepção do usuário sobre o s
 1. Clonar este repositório
 
 2. Instalar dependências
-`npm i`
+>`npm i`
 
 3. Rodar o Front-End com
-`npm start`
+>`npm start`
+
+4. O Back-End dessa dessa aplicação foi disponibilizada por terceiros e já está configurada
 
 4. Você pode opcionalmente fazer a build do projeto
-`npm run build`
+>`npm run build`
 
-5. Por último, acesse http: // localhost: 3000 em seu navegador
+5. Por último, acesse http://localhost:3000 em seu navegador
