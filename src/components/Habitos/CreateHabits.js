@@ -1,9 +1,9 @@
 import styled from "styled-components"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import Loader from "react-loader-spinner";
 import axios from "axios"
 export default function CreateHabits({props}) {
-  const {habitsDays, setHabitsDays, creatingHabit,setCreatingHabit, hasUpdate, setHasUpdate, accountInformation } = props
+  const {habitsDays, setHabitsDays, creatingHabit,setCreatingHabit, setHasUpdate, accountInformation } = props
   const [isLoading, setIsLoading] = useState(false)
   const config = {
     headers: { Authorization: `Bearer ${accountInformation.token}` },
@@ -12,7 +12,7 @@ export default function CreateHabits({props}) {
     if(!creatingHabit) return ""
     return (
       <form onSubmit={submitHabit}>
-        <CreateHabit loading={isLoading}>
+        <CreateHabit isLoading={isLoading}>
           <input
             type="text"
             value={habitsDays.name}
@@ -37,8 +37,8 @@ export default function CreateHabits({props}) {
             ))}
           </WeekDay>
           <CancelSave>
-            <Button loading={isLoading} type="reset" botao="cancel" onClick={() => setCreatingHabit(false) }>Cancelar</Button>
-            <Button loading={isLoading} type="submit" botao="save">{" "}
+            <Button isLoading={isLoading} type="reset" botao="cancel" onClick={() => setCreatingHabit(false) }>Cancelar</Button>
+            <Button isLoading={isLoading} type="submit" botao="save">{" "}
           {isLoading ? (
             <Loader type="ThreeDots" color="white" height={35} width={40} />
           ) : (
@@ -109,9 +109,9 @@ const CreateHabit = styled.div`
   
       border: 1px solid #D5D5D5;
       border-radius: 5px;
-      background: ${prop => prop.loading ? "#F2F2F2" : "white"};
-      pointer-events: ${prop => prop.loading ? "none" : "initial"};
-      opacity: ${prop => prop.loading ? 0.35 : 1};
+      background: ${prop => prop.isLoading ? "#F2F2F2" : "white"};
+      pointer-events: ${prop => prop.isLoading ? "none" : "initial"};
+      opacity: ${prop => prop.isLoading ? 0.35 : 1};
   
       font-size: 20px;
     }
@@ -133,7 +133,7 @@ const Day = styled.div`
   border-radius: 5px;
   background: ${(prop) =>
     prop.isSelected === "selected" ? "#DBDBDB" : "white"};
-  pointer-events: ${prop => prop.loading ? "none" : "initial"};
+  pointer-events: ${prop => prop.isLoading ? "none" : "initial"};
 
   margin-right: 4px;
 
@@ -152,7 +152,7 @@ const Button = styled.button`
 
   border-radius: 5px;
   border: 0 solid;
-  opacity: ${prop => prop.loading ? 0.35 : 1};
+  opacity: ${prop => prop.isLoading ? 0.35 : 1};
   background: ${(prop) => (prop.botao === "cancel" ? "white" : "#52B6FF")};
 
   font-size: 16px;

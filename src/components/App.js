@@ -1,5 +1,5 @@
-import { BrowserRouter, Switch, Route, useHistory } from "react-router-dom"
-import { useState, useEffect } from "react"
+import { BrowserRouter, Switch, Route } from "react-router-dom"
+import { useState } from "react"
 
 import UserContext from "../context/UserContext"
 import LoginScreen from "./LoginScreen/LoginScreen"
@@ -12,7 +12,7 @@ import Historic from "./Historic/Historic"
 import { Global } from "./GlobalStyle/GlobalStyle"
 
 export default function App() {
-  const [accountInformation, setAccountInformation] = useState(null)
+  const [accountInformation, setAccountInformation] = useState(JSON.parse(localStorage.getItem("user")))
   const [habitsDay, setHabitsDay] = useState([]);
   const [hasUpdate, setHasUpdate] = useState(false)
 

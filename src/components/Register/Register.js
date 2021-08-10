@@ -83,20 +83,19 @@ export default function Register() {
 
   function registerAccount(e) {
     e.preventDefault();
-    setIsLoading(1);
-    console.log(registerInformation);
+    setIsLoading(true);
     const request = axios.post(
       "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up",
       registerInformation
     );
     request.then((response) => {
       alert(`O email: ${response.data.email} foi cadastrado com sucesso`);
-      setIsLoading(0);
+      setIsLoading(false);
       history.push("/");
     });
     request.catch((response) => {
       alert(`Houve um erro: ${response.response.status}, tente novamente`);
-      setIsLoading(0);
+      setIsLoading(false);
     });
   }
 }

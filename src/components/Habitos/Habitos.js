@@ -7,7 +7,7 @@ import { BsTrash } from "react-icons/bs";
 export default function Habitos() {
   const { accountInformation, hasUpdate, setHasUpdate, setHabitsDay } =
     useContext(UserContext);
-  const [myHabits, setMyHabits] = useState([]);
+  const [myHabits, setMyHabits] = useState();
   const [habitsDays, setHabitsDays] = useState({ name: "", days: [] });
   const [creatingHabit, setCreatingHabit] = useState(false);
   const config = {
@@ -90,9 +90,8 @@ export default function Habitos() {
       if (!localStorage.getItem("user")) {
         const user = JSON.stringify(accountInformation);
         localStorage.setItem("user", user);
-        console.log(localStorage.getItem("user"));
       }
-    }, [accountInformation]);
+    }, []);
   }
 
   function RequestHabits() {

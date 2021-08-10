@@ -1,18 +1,20 @@
 # Track It
 
-Uma aplicação para controle de hábitos, crie a sua conta e logue para começar a acompanhar o desenvolvimento dos seus hábitos. Adicione um hábito, selecionando o dia de semana que você irá desenvolver e acompanhe o seu progresso diário e o seu histórico de progresso no calendário do aplicativo.
+Uma aplicação para controle de hábitos, crie a sua conta e logue para começar a acompanhar o seudesenvolvimento. Adicione um hábito selecionando o dia da semana que você irá desenvolvê-lo e acompanhe o seu progresso diário ou seu histórico de progresso no calendário do aplicativo.
+
+<img src="/assets/track-it.gif" />
 
 ## Sobre
 
-Esta é uma aplicação onde os usuário irão ter controle dos seus hábitos, na aplicação estão implementadas as funcionalidades de:
+Esta é uma aplicação onde os usuário irão ter controle dos seus hábitos. Na aplicação estão implementadas as funcionalidades de:
 
 - Login
 - Cadastro
-- Topo, onde o usuário pode visualizar sua foto e outras informações
-- Menu inferior, onde pode-se acessar as outras três funcionalidade a seguir
-- Tela de Hábitos, onde o usuário pode cadastrar novos hábitos
-- Tela de "Hoje", onde o usuário visualiza a lista de hábitos que precisa completar no dia
-- Tela de Histórico, onde é possível verificar por meio de calendário, o desempenho de dias anteriores
+- Topo: O usuário pode visualizar sua foto e outras informações
+- Menu inferior: É possível acessar as outras três funcionalidade a seguir
+- Tela de Hábitos: O usuário pode cadastrar novos hábitos
+- Tela de "Hoje": O usuário visualiza a lista de hábitos que precisa completar no dia
+- Tela de Histórico: É possível verificar por meio de calendário, o desempenho de dias anteriores
 
 Dessa forma, o aplicativo proporciona a melhor percepção do usuário sobre o seu próprio progresso, incentivando e parabenizando-o
 

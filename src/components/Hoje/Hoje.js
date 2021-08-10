@@ -1,4 +1,4 @@
-import { useEffect, useContext, useState } from "react"
+import { useEffect, useContext } from "react"
 import styled from "styled-components"
 import axios from "axios"
 import UserContext from "../../context/UserContext"
@@ -30,7 +30,7 @@ export default function Hoje() {
   return (
     <ContainerToday>
       <Title>{currentDate}</Title>
-      <Subtitle color={percentage}>{habitsDay.length ? (percentage !== 0 ? `${percentage.toFixed(0)}% dos hábitos concluídos`:"Nenhuma hábito concluído ainda") : "Não há habitos para o dia atual"}</Subtitle>
+      <Subtitle colorbool={percentage}>{habitsDay.length ? (percentage !== 0 ? `${percentage.toFixed(0)}% dos hábitos concluídos`:"Nenhuma hábito concluído ainda") : "Não há habitos para o dia atual"}</Subtitle>
       <HabitsToday>
         {habitsDay.map((h) => (
           <HabitToday key={h.id}>
@@ -38,10 +38,10 @@ export default function Hoje() {
               <HabitDescription key={h.id}>{h.name}</HabitDescription>
               <div>
                 <HabitSequence key={h.id + '1'}>
-                  Sequência atual: <CurrentSequence color={h.done}>{h.currentSequence} dias</CurrentSequence> 
+                  Sequência atual: <CurrentSequence colorbool={h.done}>{h.currentSequence} dias</CurrentSequence> 
                 </HabitSequence>
                 <HabitSequence key={h.id + '2'}>
-                  Seu recorde: <HighestSequence color={h.highestSequence !== 0 && h.currentSequence === h.highestSequence}>{h.highestSequence} dias</HighestSequence> 
+                  Seu recorde: <HighestSequence colorbool={h.highestSequence !== 0 && h.currentSequence === h.highestSequence}>{h.highestSequence} dias</HighestSequence> 
                 </HabitSequence>
               </div>
             </HabitContainer>
@@ -90,7 +90,7 @@ const Title = styled.div`
 `;
 const Subtitle = styled.div`
   font-size: 18px;
-  color: ${prop => prop.color ? "#8FC549" : "#bababa" };
+  color: ${prop => prop.colorbool ? "#8FC549" : "#bababa" };
 
   margin-bottom: 28px;
 `;
@@ -129,9 +129,9 @@ const HabitSequence = styled.div`
 `;
 
 const CurrentSequence = styled.span`
-    color: ${prop => prop.color ? "#8FC549" : "#666666"};
+    color: ${prop => prop.colorbool ? "#8FC549" : "#666666"};
 `;
 
 const HighestSequence = styled.span`
-    color: ${prop => prop.color ? "#8FC549" : "#666666"};
+    color: ${prop => prop.colorbool ? "#8FC549" : "#666666"};
 `;

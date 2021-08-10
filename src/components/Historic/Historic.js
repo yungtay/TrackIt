@@ -8,7 +8,7 @@ import './Calendar.css'
 export default function Historic() {
 
     const {accountInformation} = useContext(UserContext);
-    const [habitsCalendar, setHabitsCalendar] = useState([])
+    const [habitsCalendar, setHabitsCalendar] = useState()
 
     useEffect(() => {
 
@@ -26,6 +26,7 @@ export default function Historic() {
 
     }, []);
 
+    if (!habitsCalendar) return "Carregando";
     const segura = habitsCalendar.map((h) => h.day)
 
   return (
@@ -40,7 +41,7 @@ export default function Historic() {
                 habitsCalendar.findIndex(
                   (d) => d.day === dayjs(date).format("DD/MM/YYYY")
                 )
-              ].habits.reduce((acc, d) => (!d.done ? (acc = false) : acc))
+              ].habits.reduce((acc, d) => (!d.done ? false : acc))
               ? "react-calendar-tile-green"
               : "react-calendar-tile-red"
             : null

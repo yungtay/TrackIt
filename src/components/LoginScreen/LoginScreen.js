@@ -27,7 +27,7 @@ export default function LoginScreen() {
   if (isLoading === null) return "Carregando";
 
   return (
-    <LoginRegistrationContainer loading={isLoading}>
+    <LoginRegistrationContainer isLoading={isLoading}>
       <form onSubmit={logIn}>
         <img src={logo} alt="logo" />
         <input
@@ -105,9 +105,9 @@ const LoginRegistrationContainer = styled.div`
     margin-bottom: 8px;
 
     font-size:20px;
-    opacity: ${prop => prop.loading ? 0.35 : 1};
-    background: ${prop => prop.loading ? "#F2F2F2" : "white"};
-    pointer-events: ${prop => prop.loading ? "none" : "initial"};
+    opacity: ${prop => prop.isLoading ? 0.35 : 1};
+    background: ${prop => prop.isLoading ? "#F2F2F2" : "white"};
+    pointer-events: ${prop => prop.isLoading ? "none" : "initial"};
 
     border: 1px solid #D5D5D5;
     border-radius: 5px;
