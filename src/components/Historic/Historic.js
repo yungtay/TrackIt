@@ -27,29 +27,43 @@ export default function Historic() {
     }, []);
 
     const segura = habitsCalendar.map((h) => h.day)
-    //console.log(habitsCalendar.findIndex((d) => d.day === '21/05/2021'))
-    //console.log(habitsCalendar[habitsCalendar.findIndex((d) => d.day === '21/05/2021')].habits)
-    //console.log(habitsCalendar)
-
-    //console.log([1,2,3].findIndex((t) => t === 3))
-
-    //
-
 
   return (
     <ContainerHistoric>
       <Title>Histórico</Title>
-      <Calendar locale="pt-br" calendarType="US" tileClassName={({ date }) => segura.includes(dayjs(date).format('DD/MM/YYYY')) ? (habitsCalendar[habitsCalendar.findIndex((d) => d.day === dayjs(date).format('DD/MM/YYYY'))].habits.reduce((acc, d) => !d.done ? acc = false : acc ) ? 'react-calendar-tile-green' : 'react-calendar-tile-red') : null } onClickDay={(date) => segura.includes(dayjs(date).format('DD/MM/YYYY'))}/>
-       <HabitCalendarBottom>
-
-        </HabitCalendarBottom> 
+      <Calendar
+        locale="pt-br"
+        calendarType="US"
+        tileClassName={({ date }) =>
+          segura.includes(dayjs(date).format("DD/MM/YYYY"))
+            ? habitsCalendar[
+                habitsCalendar.findIndex(
+                  (d) => d.day === dayjs(date).format("DD/MM/YYYY")
+                )
+              ].habits.reduce((acc, d) => (!d.done ? (acc = false) : acc))
+              ? "react-calendar-tile-green"
+              : "react-calendar-tile-red"
+            : null
+        }
+        onClickDay={(date) =>
+          segura.includes(dayjs(date).format("DD/MM/YYYY")) && ShowHabits(date)
+        }
+      />
+      <HabitCalendarBottom>
+      </HabitCalendarBottom>
     </ContainerHistoric>
   );
 
-  function ShowHabits(date){
-      return(
-        <div>{habitsCalendar[habitsCalendar.findIndex((d) => d.day === dayjs(date).format('DD/MM/YYYY'))].habits.map((h) => h.name)}</div>
-      )
+  function ShowHabits(date) {
+    return (
+      <div>
+        {habitsCalendar[
+          habitsCalendar.findIndex(
+            (d) => d.day === dayjs(date).format("DD/MM/YYYY")
+          )
+        ].habits.map((h) => h.name)}
+      </div>
+    );
   }
 }
 
