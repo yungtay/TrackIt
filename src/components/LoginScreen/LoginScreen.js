@@ -1,30 +1,29 @@
 import styled from 'styled-components';
 import logo from '../../image/logo.png';
 import { Link, useHistory } from 'react-router-dom';
-import { useState, useContext, useEffect } from 'react'
-import axios from "axios"
-import Loader from "react-loader-spinner";
-import UserContext from "../../context/UserContext"
+import { useState, useContext, useEffect } from 'react';
+import axios from 'axios';
+import Loader from 'react-loader-spinner';
+import UserContext from '../../context/UserContext';
 export default function LoginScreen() {
   const [loginInformation, setLoginInformation] = useState({
-    email: "",
-    password: "",
+    email: '',
+    password: '',
   });
   const [isLoading, setIsLoading] = useState(false);
   const history = useHistory();
   const { setAccountInformation } = useContext(UserContext);
 
-  
   useEffect(() => {
-    if(localStorage.getItem("user")){
-      const userSerializado = localStorage.getItem("user")
-      const user = JSON.parse(userSerializado)
-      setAccountInformation(user)
-      history.push("/habitos")
+    if (localStorage.getItem('user')) {
+      const userSerializado = localStorage.getItem('user');
+      const user = JSON.parse(userSerializado);
+      setAccountInformation(user);
+      history.push('/habitos');
     }
-  }, [])
+  }, []);
 
-  if (isLoading === null) return "Carregando";
+  if (isLoading === null) return 'Carregando';
 
   return (
     <LoginRegistrationContainer isLoading={isLoading}>
@@ -53,11 +52,11 @@ export default function LoginScreen() {
           }
         ></input>
         <button type="submit">
-          {" "}
+          {' '}
           {isLoading ? (
             <Loader type="ThreeDots" color="white" height={20} />
           ) : (
-            "Entrar"
+            'Entrar'
           )}
         </button>
         <LinkContainer>
@@ -71,23 +70,21 @@ export default function LoginScreen() {
     e.preventDefault();
     setIsLoading(true);
     const request = axios.post(
-      "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login",
+      `${process.env.REACT_APP_API_BASE_URL}/auth/login`,
       loginInformation
     );
-    request.then(logInSucess)
-    request.catch(logInFail)
+    request.then(logInSucess);
+    request.catch(logInFail);
   }
 
   function logInSucess(response) {
     setAccountInformation(response.data);
     setIsLoading(false);
-    history.push("/habitos");
+    history.push('/habitos');
   }
 
   function logInFail(response) {
-    alert(
-      `O email ou senha são inválidos, erro: ${response.response.status}`
-    );
+    alert(`O email ou senha são inválidos, erro: ${response.response.status}`);
     setIsLoading(false);
   }
 }
@@ -104,23 +101,23 @@ const LoginRegistrationContainer = styled.div`
     padding: 11px;
     margin-bottom: 8px;
 
-    font-size:20px;
-    opacity: ${prop => prop.isLoading ? 0.35 : 1};
-    background: ${prop => prop.isLoading ? "#F2F2F2" : "white"};
-    pointer-events: ${prop => prop.isLoading ? "none" : "initial"};
+    font-size: 20px;
+    opacity: ${(prop) => (prop.isLoading ? 0.35 : 1)};
+    background: ${(prop) => (prop.isLoading ? '#F2F2F2' : 'white')};
+    pointer-events: ${(prop) => (prop.isLoading ? 'none' : 'initial')};
 
-    border: 1px solid #D5D5D5;
+    border: 1px solid #d5d5d5;
     border-radius: 5px;
   }
-  input::placeholder{
-    color: #BDBDBD;
+  input::placeholder {
+    color: #bdbdbd;
   }
   button {
     margin-bottom: 25px;
 
     font-size: 21px;
     color: white;
-    background:#52B6FF;
+    background: #52b6ff;
   }
   img {
     width: 180px;
@@ -136,10 +133,8 @@ const LoginRegistrationContainer = styled.div`
 `;
 
 const LinkContainer = styled.div`
-  color: #52B6FF;
+  color: #52b6ff;
   font-size: 14px;
-`
+`;
 
-
-
-export {LoginRegistrationContainer, LinkContainer} ;
+export { LoginRegistrationContainer, LinkContainer };

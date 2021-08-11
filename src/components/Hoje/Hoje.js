@@ -1,36 +1,51 @@
-import { useEffect, useContext } from "react"
-import styled from "styled-components"
-import axios from "axios"
-import UserContext from "../../context/UserContext"
-import dayjs from "dayjs"
-import "dayjs/locale/pt-br";
-import { FaCheckSquare } from 'react-icons/fa'
-
+import { useEffect, useContext } from 'react';
+import styled from 'styled-components';
+import axios from 'axios';
+import UserContext from '../../context/UserContext';
+import dayjs from 'dayjs';
+import 'dayjs/locale/pt-br';
+import { FaCheckSquare } from 'react-icons/fa';
 
 export default function Hoje() {
-  const { accountInformation,habitsDay, setHabitsDay, hasUpdate, setHasUpdate } = useContext(UserContext);
+  const {
+    accountInformation,
+    habitsDay,
+    setHabitsDay,
+    hasUpdate,
+    setHasUpdate,
+  } = useContext(UserContext);
   const config = {
     headers: { Authorization: `Bearer ${accountInformation.token}` },
   };
 
   useEffect(() => {
     const request = axios.get(
-      "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today",
+      `${process.env.REACT_APP_API_BASE_URL}/habits/today`,
       config
     );
     request.then((response) => {
-      setHabitsDay(response.data)
+      setHabitsDay(response.data);
       setHasUpdate(false);
     });
   }, [hasUpdate]);
 
-  const currentDate = dayjs().locale("pt-br").format("dddd, DD/MM");
-  const percentage = (habitsDay.reduce((acc, item) => item.done ? acc += 1/habitsDay.length : acc, 0)*100);
+  const currentDate = dayjs().locale('pt-br').format('dddd, DD/MM');
+  const percentage =
+    habitsDay.reduce(
+      (acc, item) => (item.done ? (acc += 1 / habitsDay.length) : acc),
+      0
+    ) * 100;
 
   return (
     <ContainerToday>
       <Title>{currentDate}</Title>
-      <Subtitle colorbool={percentage}>{habitsDay.length ? (percentage !== 0 ? `${percentage.toFixed(0)}% dos hábitos concluídos`:"Nenhuma hábito concluído ainda") : "Não há habitos para o dia atual"}</Subtitle>
+      <Subtitle colorbool={percentage}>
+        {habitsDay.length
+          ? percentage !== 0
+            ? `${percentage.toFixed(0)}% dos hábitos concluídos`
+            : 'Nenhuma hábito concluído ainda'
+          : 'Não há habitos para o dia atual'}
+      </Subtitle>
       <HabitsToday>
         {habitsDay.map((h) => (
           <HabitToday key={h.id}>
@@ -38,14 +53,30 @@ export default function Hoje() {
               <HabitDescription key={h.id}>{h.name}</HabitDescription>
               <div>
                 <HabitSequence key={h.id + '1'}>
-                  Sequência atual: <CurrentSequence colorbool={h.done}>{h.currentSequence} dias</CurrentSequence> 
+                  Sequência atual:{' '}
+                  <CurrentSequence colorbool={h.done}>
+                    {h.currentSequence} dias
+                  </CurrentSequence>
                 </HabitSequence>
                 <HabitSequence key={h.id + '2'}>
-                  Seu recorde: <HighestSequence colorbool={h.highestSequence !== 0 && h.currentSequence === h.highestSequence}>{h.highestSequence} dias</HighestSequence> 
+                  Seu recorde:{' '}
+                  <HighestSequence
+                    colorbool={
+                      h.highestSequence !== 0 &&
+                      h.currentSequence === h.highestSequence
+                    }
+                  >
+                    {h.highestSequence} dias
+                  </HighestSequence>
                 </HabitSequence>
               </div>
             </HabitContainer>
-            <FaCheckSquare key={h.id + '2'} size={66} color={h.done ? "#8FC549" :"#EBEBEB"} onClick={() => checkHabitDone(h.id, h.done)}  />
+            <FaCheckSquare
+              key={h.id + '2'}
+              size={66}
+              color={h.done ? '#8FC549' : '#EBEBEB'}
+              onClick={() => checkHabitDone(h.id, h.done)}
+            />
           </HabitToday>
         ))}
       </HabitsToday>
@@ -55,13 +86,13 @@ export default function Hoje() {
   function checkHabitDone(id, done) {
     if (!done) {
       habitDoneUndone(
-        `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/check`,
-        "Houve um erro ao colocar como feito"
+        `${process.env.REACT_APP_API_BASE_URL}/habits/${id}/check`,
+        'Houve um erro ao colocar como feito'
       );
     } else {
       habitDoneUndone(
-        `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/uncheck`,
-        "Houve um erro ao colocar como não feito"
+        `${process.env.REACT_APP_API_BASE_URL}/habits/${id}/uncheck`,
+        'Houve um erro ao colocar como não feito'
       );
     }
   }
@@ -90,7 +121,7 @@ const Title = styled.div`
 `;
 const Subtitle = styled.div`
   font-size: 18px;
-  color: ${prop => prop.colorbool ? "#8FC549" : "#bababa" };
+  color: ${(prop) => (prop.colorbool ? '#8FC549' : '#bababa')};
 
   margin-bottom: 28px;
 `;
@@ -129,9 +160,9 @@ const HabitSequence = styled.div`
 `;
 
 const CurrentSequence = styled.span`
-    color: ${prop => prop.colorbool ? "#8FC549" : "#666666"};
+  color: ${(prop) => (prop.colorbool ? '#8FC549' : '#666666')};
 `;
 
 const HighestSequence = styled.span`
-    color: ${prop => prop.colorbool ? "#8FC549" : "#666666"};
+  color: ${(prop) => (prop.colorbool ? '#8FC549' : '#666666')};
 `;

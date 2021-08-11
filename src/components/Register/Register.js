@@ -1,22 +1,25 @@
-import { Link, useHistory} from 'react-router-dom';
-import { useState } from 'react'
-import axios from "axios"
-import Loader from "react-loader-spinner";
+import { Link, useHistory } from 'react-router-dom';
+import { useState } from 'react';
+import axios from 'axios';
+import Loader from 'react-loader-spinner';
 import logo from '../../image/logo.png';
 
-import { LoginRegistrationContainer, LinkContainer } from '../LoginScreen/LoginScreen'
+import {
+  LoginRegistrationContainer,
+  LinkContainer,
+} from '../LoginScreen/LoginScreen';
 
 export default function Register() {
   const [registerInformation, setRegisterInformation] = useState({
-    email: "",
-    password: "",
-    name: "",
-    image: "",
+    email: '',
+    password: '',
+    name: '',
+    image: '',
   });
   const [isLoading, setIsLoading] = useState(0);
   const history = useHistory();
 
-  if (isLoading === null) return "Carregando";
+  if (isLoading === null) return 'Carregando';
 
   return (
     <LoginRegistrationContainer loading={isLoading}>
@@ -67,11 +70,11 @@ export default function Register() {
           }
         ></input>
         <button type="submit">
-          {" "}
+          {' '}
           {isLoading ? (
             <Loader type="ThreeDots" color="white" height={20} />
           ) : (
-            "Cadastrar"
+            'Cadastrar'
           )}
         </button>
         <LinkContainer>
@@ -85,13 +88,13 @@ export default function Register() {
     e.preventDefault();
     setIsLoading(true);
     const request = axios.post(
-      "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up",
+      `${process.env.REACT_APP_API_BASE_URL}/auth/sign-up`,
       registerInformation
     );
     request.then((response) => {
       alert(`O email: ${response.data.email} foi cadastrado com sucesso`);
       setIsLoading(false);
-      history.push("/");
+      history.push('/');
     });
     request.catch((response) => {
       alert(`Houve um erro: ${response.response.status}, tente novamente`);
@@ -99,4 +102,3 @@ export default function Register() {
     });
   }
 }
-

@@ -1,33 +1,30 @@
-import styled from "styled-components"
-import Calendar from 'react-calendar'
-import dayjs from "dayjs"
-import { useEffect, useContext, useState } from "react"
-import axios from "axios"
-import UserContext from "../../context/UserContext";
-import './Calendar.css'
+import styled from 'styled-components';
+import Calendar from 'react-calendar';
+import dayjs from 'dayjs';
+import { useEffect, useContext, useState } from 'react';
+import axios from 'axios';
+import UserContext from '../../context/UserContext';
+import './Calendar.css';
 export default function Historic() {
+  const { accountInformation } = useContext(UserContext);
+  const [habitsCalendar, setHabitsCalendar] = useState();
 
-    const {accountInformation} = useContext(UserContext);
-    const [habitsCalendar, setHabitsCalendar] = useState()
+  useEffect(() => {
+    const config = {
+      headers: { Authorization: `Bearer ${accountInformation.token}` },
+    };
 
-    useEffect(() => {
+    const requestHabits = axios.get(
+      `${process.env.REACT_APP_API_BASE_URL}/habits/history/daily`,
+      config
+    );
+    requestHabits.then((response) => {
+      setHabitsCalendar(response.data);
+    });
+  }, []);
 
-      const config = {
-        headers: { Authorization: `Bearer ${accountInformation.token}` },
-      };
-
-      const requestHabits = axios.get(
-        "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/history/daily",
-        config
-      );
-      requestHabits.then((response) => {
-        setHabitsCalendar(response.data);
-      });
-
-    }, []);
-
-    if (!habitsCalendar) return "Carregando";
-    const segura = habitsCalendar.map((h) => h.day)
+  if (!habitsCalendar) return 'Carregando';
+  const segura = habitsCalendar.map((h) => h.day);
 
   return (
     <ContainerHistoric>
@@ -36,22 +33,21 @@ export default function Historic() {
         locale="pt-br"
         calendarType="US"
         tileClassName={({ date }) =>
-          segura.includes(dayjs(date).format("DD/MM/YYYY"))
+          segura.includes(dayjs(date).format('DD/MM/YYYY'))
             ? habitsCalendar[
                 habitsCalendar.findIndex(
-                  (d) => d.day === dayjs(date).format("DD/MM/YYYY")
+                  (d) => d.day === dayjs(date).format('DD/MM/YYYY')
                 )
               ].habits.reduce((acc, d) => (!d.done ? false : acc))
-              ? "react-calendar-tile-green"
-              : "react-calendar-tile-red"
+              ? 'react-calendar-tile-green'
+              : 'react-calendar-tile-red'
             : null
         }
         onClickDay={(date) =>
-          segura.includes(dayjs(date).format("DD/MM/YYYY")) && ShowHabits(date)
+          segura.includes(dayjs(date).format('DD/MM/YYYY')) && ShowHabits(date)
         }
       />
-      <HabitCalendarBottom>
-      </HabitCalendarBottom>
+      <HabitCalendarBottom></HabitCalendarBottom>
     </ContainerHistoric>
   );
 
@@ -60,7 +56,7 @@ export default function Historic() {
       <div>
         {habitsCalendar[
           habitsCalendar.findIndex(
-            (d) => d.day === dayjs(date).format("DD/MM/YYYY")
+            (d) => d.day === dayjs(date).format('DD/MM/YYYY')
           )
         ].habits.map((h) => h.name)}
       </div>
@@ -84,13 +80,5 @@ const Title = styled.div`
 `;
 
 const HabitCalendarBottom = styled.div`
-margin-top: 20px;`
-
-
-
-
-
-
-
-
-
+  margin-top: 20px;
+`;

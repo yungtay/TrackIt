@@ -1,14 +1,14 @@
-import styled from "styled-components";
-import { useEffect, useContext, useState } from "react";
-import axios from "axios";
-import UserContext from "../../context/UserContext";
-import CreateHabits, { WeekDay, Day, CreateHabit, Habit } from "./CreateHabits";
-import { BsTrash } from "react-icons/bs";
+import styled from 'styled-components';
+import { useEffect, useContext, useState } from 'react';
+import axios from 'axios';
+import UserContext from '../../context/UserContext';
+import CreateHabits, { WeekDay, Day, CreateHabit, Habit } from './CreateHabits';
+import { BsTrash } from 'react-icons/bs';
 export default function Habitos() {
   const { accountInformation, hasUpdate, setHasUpdate, setHabitsDay } =
     useContext(UserContext);
   const [myHabits, setMyHabits] = useState();
-  const [habitsDays, setHabitsDays] = useState({ name: "", days: [] });
+  const [habitsDays, setHabitsDays] = useState({ name: '', days: [] });
   const [creatingHabit, setCreatingHabit] = useState(false);
   const config = {
     headers: { Authorization: `Bearer ${accountInformation.token}` },
@@ -16,7 +16,7 @@ export default function Habitos() {
 
   RequestHabits();
 
-  if (!myHabits) return "Carregando";
+  if (!myHabits) return 'Carregando';
 
   return (
     <ContainerHabitos>
@@ -47,11 +47,11 @@ export default function Habitos() {
                   <BsTrash onClick={() => deleteHabit(h.id)} />
                 </Habit>
                 <WeekDay key={i}>
-                  {["D", "S", "T", "Q", "Q", "S", "S"].map((d, i) => (
+                  {['D', 'S', 'T', 'Q', 'Q', 'S', 'S'].map((d, i) => (
                     <Day
                       key={i}
                       isSelected={
-                        h.days.includes(i) ? "selected" : "notSelected"
+                        h.days.includes(i) ? 'selected' : 'notSelected'
                       }
                     >
                       {d}
@@ -60,16 +60,16 @@ export default function Habitos() {
                 </WeekDay>
               </CreateHabit>
             ))
-          : "Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!"}
+          : 'Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!'}
       </HabitosCadastrados>
     </ContainerHabitos>
   );
 
   function deleteHabit(id) {
-    if (!window.confirm("Você tem certeza que quer deletar o hábito ?")) return;
+    if (!window.confirm('Você tem certeza que quer deletar o hábito ?')) return;
 
     const request = axios.delete(
-      `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}`,
+      `${process.env.REACT_APP_API_BASE_URL}/habits/${id}`,
       config
     );
     request.then(deleteHabitSucess);
@@ -77,19 +77,19 @@ export default function Habitos() {
   }
 
   function deleteHabitSucess(response) {
-    alert("Você deletou esse hábito");
+    alert('Você deletou esse hábito');
     setHasUpdate(true);
   }
 
   function deleteHabitFail(response) {
-    alert("Ocorreu um erro, tente novamente");
+    alert('Ocorreu um erro, tente novamente');
   }
 
   function CheckLocalUser() {
     useEffect(() => {
-      if (!localStorage.getItem("user")) {
+      if (!localStorage.getItem('user')) {
         const user = JSON.stringify(accountInformation);
-        localStorage.setItem("user", user);
+        localStorage.setItem('user', user);
       }
     }, []);
   }
@@ -97,7 +97,7 @@ export default function Habitos() {
   function RequestHabits() {
     useEffect(() => {
       const requestHabits = axios.get(
-        "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits",
+        `${process.env.REACT_APP_API_BASE_URL}/habits`,
         config
       );
       requestHabits.then((response) => {
@@ -106,7 +106,7 @@ export default function Habitos() {
       setHasUpdate(false);
 
       const requestTodayHabits = axios.get(
-        "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today",
+        `${process.env.REACT_APP_API_BASE_URL}/habits/today`,
         config
       );
       requestTodayHabits.then((response) => {
