@@ -95,7 +95,7 @@ export default function CreateHabits({ props }) {
     request.catch(submitHabitFail);
   }
 
-  function submitHabitSucess(response) {
+  function submitHabitSucess() {
     alert('O hábito foi adicionado com sucesso !');
     setIsLoading(false);
     setHabitsDays({ name: '', days: [] });
@@ -103,7 +103,7 @@ export default function CreateHabits({ props }) {
     setHasUpdate(true);
   }
 
-  function submitHabitFail(response) {
+  function submitHabitFail() {
     alert('O hábito não foi adicionado tente novamente !');
     setIsLoading(false);
   }

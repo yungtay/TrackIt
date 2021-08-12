@@ -47,18 +47,18 @@ export default function Hoje() {
           : 'Não há habitos para o dia atual'}
       </Subtitle>
       <HabitsToday>
-        {habitsDay.map((h) => (
-          <HabitToday key={h.id}>
-            <HabitContainer key={h.id + '1'}>
-              <HabitDescription key={h.id}>{h.name}</HabitDescription>
+        {habitsDay.map((h, index) => (
+          <HabitToday key={index}>
+            <HabitContainer key={index}>
+              <HabitDescription key={index}>{h.name}</HabitDescription>
               <div>
-                <HabitSequence key={h.id + '1'}>
+                <HabitSequence key={index + '1'}>
                   Sequência atual:{' '}
                   <CurrentSequence colorbool={h.done}>
                     {h.currentSequence} dias
                   </CurrentSequence>
                 </HabitSequence>
-                <HabitSequence key={h.id + '2'}>
+                <HabitSequence key={index + '2'}>
                   Seu recorde:{' '}
                   <HighestSequence
                     colorbool={
@@ -99,10 +99,10 @@ export default function Hoje() {
 
   function habitDoneUndone(url, msg) {
     const request = axios.post(url, {}, config);
-    request.then((response) => {
+    request.then(() => {
       setHasUpdate(true);
     });
-    request.catch((response) => {
+    request.catch(() => {
       alert(msg);
     });
   }

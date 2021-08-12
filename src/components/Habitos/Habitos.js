@@ -76,12 +76,12 @@ export default function Habitos() {
     request.catch(deleteHabitFail);
   }
 
-  function deleteHabitSucess(response) {
+  function deleteHabitSucess() {
     alert('Você deletou esse hábito');
     setHasUpdate(true);
   }
 
-  function deleteHabitFail(response) {
+  function deleteHabitFail() {
     alert('Ocorreu um erro, tente novamente');
   }
 
