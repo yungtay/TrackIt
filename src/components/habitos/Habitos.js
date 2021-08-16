@@ -14,7 +14,9 @@ export default function Habitos() {
     headers: { Authorization: `Bearer ${accountInformation.token}` },
   };
 
-  RequestHabits();
+  useEffect(() => {
+    RequestHabits();
+  }, [hasUpdate]);
 
   if (!myHabits) return 'Carregando';
 
@@ -85,36 +87,23 @@ export default function Habitos() {
     alert('Ocorreu um erro, tente novamente');
   }
 
-  function CheckLocalUser() {
-    useEffect(() => {
-      if (!localStorage.getItem('user')) {
-        const user = JSON.stringify(accountInformation);
-        localStorage.setItem('user', user);
-      }
-    }, []);
-  }
-
   function RequestHabits() {
-    useEffect(() => {
-      const requestHabits = axios.get(
-        `${process.env.REACT_APP_API_BASE_URL}/habits`,
-        config
-      );
-      requestHabits.then((response) => {
-        setMyHabits(response.data);
-      });
-      setHasUpdate(false);
+    const requestHabits = axios.get(
+      `${process.env.REACT_APP_API_BASE_URL}/habits`,
+      config
+    );
+    requestHabits.then((response) => {
+      setMyHabits(response.data);
+    });
+    setHasUpdate(false);
 
-      const requestTodayHabits = axios.get(
-        `${process.env.REACT_APP_API_BASE_URL}/habits/today`,
-        config
-      );
-      requestTodayHabits.then((response) => {
-        setHabitsDay(response.data);
-      });
-    }, [hasUpdate]);
-
-    CheckLocalUser();
+    const requestTodayHabits = axios.get(
+      `${process.env.REACT_APP_API_BASE_URL}/habits/today`,
+      config
+    );
+    requestTodayHabits.then((response) => {
+      setHabitsDay(response.data);
+    });
   }
 }
 

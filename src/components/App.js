@@ -2,14 +2,14 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { useState } from 'react';
 
 import UserContext from '../context/UserContext';
-import LoginScreen from './LoginScreen/LoginScreen';
-import Register from './Register/Register';
-import NavBar from './NavBar/NavBar';
-import Footer from './Footer/Footer';
-import Habitos from './Habitos/Habitos';
-import Hoje from './Hoje/Hoje';
-import Historic from './Historic/Historic';
-import { Global } from './GlobalStyle/GlobalStyle';
+import LoginScreen from './loginScreen/LoginScreen';
+import Register from './register/Register';
+import NavBar from './navbar/NavBar';
+import Footer from './footer/Footer';
+import Habitos from './habitos/Habitos';
+import Hoje from './hoje/Hoje';
+import Historic from './historic/Historic';
+import { Global } from './globalStyle/GlobalStyle';
 
 export default function App() {
   const [accountInformation, setAccountInformation] = useState(

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import logo from '../../image/logo.png';
 import { Link, useHistory } from 'react-router-dom';
-import { useState, useContext, useEffect } from 'react';
+import { useState, useContext } from 'react';
 import axios from 'axios';
 import Loader from 'react-loader-spinner';
 import UserContext from '../../context/UserContext';
@@ -13,15 +13,6 @@ export default function LoginScreen() {
   const [isLoading, setIsLoading] = useState(false);
   const history = useHistory();
   const { setAccountInformation } = useContext(UserContext);
-
-  useEffect(() => {
-    if (localStorage.getItem('user')) {
-      const userSerializado = localStorage.getItem('user');
-      const user = JSON.parse(userSerializado);
-      setAccountInformation(user);
-      history.push('/habitos');
-    }
-  }, []);
 
   if (isLoading === null) return 'Carregando';
 
@@ -78,6 +69,7 @@ export default function LoginScreen() {
   }
 
   function logInSucess(response) {
+    localStorage.setItem('user', JSON.stringify(response.data));
     setAccountInformation(response.data);
     setIsLoading(false);
     history.push('/habitos');

@@ -7,7 +7,7 @@ import logo from '../../image/logo.png';
 import {
   LoginRegistrationContainer,
   LinkContainer,
-} from '../LoginScreen/LoginScreen';
+} from '../loginScreen/LoginScreen';
 
 export default function Register() {
   const [registerInformation, setRegisterInformation] = useState({
@@ -16,7 +16,7 @@ export default function Register() {
     name: '',
     image: '',
   });
-  const [isLoading, setIsLoading] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
   const history = useHistory();
 
   if (isLoading === null) return 'Carregando';
@@ -91,14 +91,19 @@ export default function Register() {
       `${process.env.REACT_APP_API_BASE_URL}/auth/sign-up`,
       registerInformation
     );
-    request.then((response) => {
-      alert(`O email: ${response.data.email} foi cadastrado com sucesso`);
-      setIsLoading(false);
-      history.push('/');
-    });
-    request.catch((response) => {
-      alert(`Houve um erro: ${response.response.status}, tente novamente`);
-      setIsLoading(false);
-    });
+    request.then((response) => registerAccountSucess(response));
+    request.catch((response) => registerAccountFail(response));
+  }
+
+  function registerAccountSucess(response) {
+    alert(`O email: ${response.data.email} foi cadastrado com sucesso`);
+    setIsLoading(false);
+    history.push('/');
+  }
+
+  function registerAccountFail(response) {
+    alert(`O email: ${response.data.email} foi cadastrado com sucesso`);
+    setIsLoading(false);
+    history.push('/');
   }
 }
